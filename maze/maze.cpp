@@ -2,14 +2,17 @@
 
 // ----------------------- Maze -----------------------------------
 Maze::Maze(uint32 width, uint32 height):width(width), height(height) {
-	data = std::vector<int32>(width * height, 0);
+	for(size_t i = 0; i < height; i++) {
+		for(size_t j = 0; j < width; j++) {
+			data.emplace_back(j, i, CELLTYPE_WALL);
+		}
+	}
 }
 
-void Maze::print() {
+void Maze::print() const {
 	for(size_t i = 0; i < this->height; i++) {
 		for(size_t j = 0; j < this->width; j++) {
-			if(this->at(j, i) == 0) std::cout << ".";
-			else std::cout << " ";
+			at(j, i)->print();
 		}
 		std::cout << std::endl;
 	}
