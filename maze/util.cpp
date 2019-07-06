@@ -1,21 +1,21 @@
 #include "util.h"
 
 // --------------------------- Union Find ----------------------------
-UF::UF(uint_fast32_t size) {
-	data = std::vector<int_fast32_t>(size);
-	rank = std::vector<int_fast32_t>(size, 0);
+UF::UF(uint32 size) {
+	data = std::vector<uint32>(size);
+	rank = std::vector<uint32>(size, 0);
 	for(size_t i = 0; i < size; i++) data[i] = i;
 }
 
-int_fast32_t UF::root(int_fast32_t x) {
+int32 UF::root(int32 x) {
 	return data[x] == x ? x : data[x] = root(data[x]);
 }
 
-bool UF::same(int_fast32_t x, int_fast32_t y) {
+bool UF::same(int32 x, int32 y) {
 	return root(x) == root(y);
 }
 
-void UF::unit(int_fast32_t x, int_fast32_t y) {
+void UF::unite(int32 x, int32 y) {
 	x = root(x);
 	y = root(y);
 	if(x == y) return;
@@ -25,5 +25,12 @@ void UF::unit(int_fast32_t x, int_fast32_t y) {
 		data[y] = x;
 		if(rank[x] == rank[y]) rank[x]++;
 	}
+}
+
+bool UF::isAllSame() const {
+	for(size_t i = 1; i < data.size(); i++) {
+		if(data[i] != data[0]) return false;
+	}
+	return true;
 }
 // -------------------------------------------------------------------

@@ -4,7 +4,7 @@
 #include "util.h"
 #include "graph.h"
 
-enum CellType {
+enum CellType: uint32 {
 	CELLTYPE_ROAD, CELLTYPE_WALL
 };
 
@@ -18,8 +18,8 @@ public:
 	}
 
 	void print() const {
-		if(type == CELLTYPE_ROAD) std::cout << " ";
-		if(type == CELLTYPE_WALL) std::cout << "*";
+		if(type == CELLTYPE_ROAD) std::cout << "@";
+		if(type == CELLTYPE_WALL) std::cout << "¡";
 	}
 };
 
@@ -27,7 +27,6 @@ class Maze {
 private:
 	uint32 width, height;
 	std::vector<Cell> data;
-	std::vector<Edge> edges;
 
 	inline const Cell *at(uint32 x, uint32 y) const {
 		return &data[width * y + x];
@@ -35,6 +34,7 @@ private:
 
 public:
 	Maze(uint32 width, uint32 height);
+	Maze(uint32 width, uint32 height, std::vector<CellType> cellTypes);
 
 	void print() const;
 };

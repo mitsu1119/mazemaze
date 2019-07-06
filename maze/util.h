@@ -8,15 +8,17 @@ typedef uint_fast32_t  uint32;
 
 // ------------------------------- Union Find ----------------------------
 class UF {
-private:
-	std::vector<int_fast32_t> data;
-	std::vector<int_fast32_t> rank;
+protected:
+	std::vector<uint32> data;
+	std::vector<uint32> rank;
 
-	int_fast32_t root(int_fast32_t x);
+	int32 root(int32 x);
 public:
-	UF(uint_fast32_t size);
+	UF(uint32 size);
 
-	bool same(int_fast32_t x, int_fast32_t y);
-	void unit(int_fast32_t x, int_fast32_t y);
+	bool same(int32 x, int32 y);
+	void unite(int32 x, int32 y);
+
+	bool isAllSame() const;
 };
 // ------------------------------------------------------------------------
