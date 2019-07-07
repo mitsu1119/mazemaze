@@ -1,36 +1,38 @@
 #include "util.h"
 
-// --------------------------- Union Find ----------------------------
-UF::UF(uint32 size) {
-	data = std::vector<uint32>(size);
-	rank = std::vector<uint32>(size, 0);
-	for(size_t i = 0; i < size; i++) data[i] = i;
+int32 D4DX(DirectionFour dir) {
+	switch(dir) {
+	case D4UP:
+	case D4DOWN:
+		return 0;
+	case D4RIGHT:
+		return 1;
+	case D4LEFT:
+		return -1;
+	};
 }
 
-int32 UF::root(int32 x) {
-	return data[x] == x ? x : data[x] = root(data[x]);
+int32 D4DY(DirectionFour dir) {
+	switch(dir) {
+	case D4UP:
+		return -1;
+	case D4DOWN:
+		return 1;
+	case D4RIGHT:
+	case D4LEFT:
+		return 0;
+	};
 }
 
-bool UF::same(int32 x, int32 y) {
-	return root(x) == root(y);
+DirectionFour oppositeDir(DirectionFour dir) {
+	switch(dir) {
+	case D4UP:
+		return D4DOWN;
+	case D4DOWN:
+		return D4UP;
+	case D4RIGHT:
+		return D4LEFT;
+	case D4LEFT:
+		return D4RIGHT;
+	};
 }
-
-void UF::unite(int32 x, int32 y) {
-	x = root(x);
-	y = root(y);
-	if(x == y) return;
-
-	if(rank[x] < rank[y]) data[x] = y;
-	else {
-		data[y] = x;
-		if(rank[x] == rank[y]) rank[x]++;
-	}
-}
-
-bool UF::isAllSame() const {
-	for(size_t i = 1; i < data.size(); i++) {
-		if(data[i] != data[0]) return false;
-	}
-	return true;
-}
-// -------------------------------------------------------------------
