@@ -9,38 +9,28 @@
 // ------------------------------- Maze UF -------------------------------
 class MazeUF {
 private:
+	// for Union Find
 	std::vector<uint32> data;
 	std::vector<uint32> rank;
+
+	// for Maze
 	uint32 width, height, size;
 
+	// for Union Find
 	int32 root(int32 x);
 	bool same(int32 x, int32 y);
-
-public:
-	MazeUF(uint32 width, uint32 height): width(width), height(height), size(width *height) {
-		data = std::vector<uint32>(size);
-		rank = std::vector<uint32>(size, 0);
-		for(size_t i = 0; i < size; i++) data[i] = i;
-	}
+	void unite(int32 x, int32 y);
 
 	// find a different tag cell adjacent to a tag that contains a cell with coordinates (x, y)
 	int32 findDifNeighbor(uint32 x, uint32 y, uint32 &outX, uint32 &outY, DirectionFour &outDir);
 
-	inline uint32 at(uint32 x, uint32 y) const{
-		return y * width + x;
-	}
+public:
+	MazeUF(uint32 width, uint32 height);
+
+	// findDifNeighbor() and unite
+	void uniteDifNeighbor(uint32 x, uint32 y, uint32 &outX, uint32 &outY, DirectionFour &outDir);
 
 	bool isAllSame();
-	void unite(int32 x, int32 y);
-
-	void print() {
-		for(size_t i = 0; i < height; i++) {
-			for(size_t j = 0; j < width; j++) {
-				std::cout << std::setw(3) << data[i * width + j] << " ";
-			}
-			std::cout << std::endl;
-		}
-	}
 };
 // ------------------------------------------------------------------------
 

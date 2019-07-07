@@ -1,6 +1,11 @@
 #include "KruskalMaze.h"
 
 // --------------------------- Maze UF ---------------------------------
+MazeUF::MazeUF(uint32 width, uint32 height): width(width), height(height), size(width *height) {
+	data = std::vector<uint32>(size);
+	rank = std::vector<uint32>(size, 0);
+	for(size_t i = 0; i < size; i++) data[i] = i;
+}
 int32 MazeUF::root(int32 x) {
 	return data[x] == x ? x : data[x] = root(data[x]);
 }
@@ -58,6 +63,16 @@ int32 MazeUF::findDifNeighbor(uint32 x, uint32 y, uint32 &outX, uint32 &outY, Di
 	}
 	return -1;
 }
+
+void MazeUF::uniteDifNeighbor(uint32 x, uint32 y, uint32 &outX, uint32 &outY, DirectionFour &outDir) {
+	uint32 oX, oY;
+	DirectionFour oDir;
+	if(findDifNeighbor(x, y, oX, oY, oDir) != -1) unite(y * width + x, oY * width + oX);
+	outX = oX;
+	outY = oY;
+	outDir = oDir;
+}
+
 // -----------------------------------------------------------------------
 // --------------------------- KruskalMaze ----------------------------
 KruskalMaze::KruskalMaze(uint32 width, uint32 height): width(width), height(height), size(width *height) {
@@ -86,7 +101,7 @@ std::vector<CellType> KruskalMaze::create() {
 		randCellX = randomEngine() % (width / 2);
 		randCellY = randomEngine() % (height / 2);
 
-		if(sets.findDifNeighbor(randCellX, randCellY, outX, outY, outDir) != -1) sets.unite(randCellY * (width / 2) + randCellX, outY * (width / 2) + outX);
+		sets.uniteDifNeighbor(randCellX, randCellY, outX, outY, outDir);
 
 		// break wall
 		baseMaze[(2 * outY + 1) * width + (2 * outX + 1) + D4DY(oppositeDir(outDir)) * width + D4DX(oppositeDir(outDir))] = CELLTYPE_ROAD;
